@@ -41,6 +41,7 @@ const RegistrationPage = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const bdPhoneRegex = /^(\+?88)?01[3-9]\d{8}$/;
+    let tempMobileNumber = mobileNumber;
 
     if (!bdPhoneRegex.test(mobileNumber)) {
       toast.error(`'${mobileNumber}' is not a valid Mobile Number`);
@@ -70,11 +71,19 @@ const RegistrationPage = () => {
       toast.error("Please select Image!");
       return;
     }
+    const numericOnly = mobileNumber.replace(/\D/g, "");
+    if (numericOnly.startsWith("88")) {
+      tempMobileNumber = "+" + numericOnly;
+    } else if (numericOnly.startsWith("01") && numericOnly.length === 11) {
+      tempMobileNumber = "+88" + numericOnly;
+    } else {
+      tempMobileNumber = mobileNumber;
+    }
     try {
       const url = await imageUpload(data.profilePicture.files[0]);
       const user = {
         name,
-        mobileNumber,
+        mobileNumber: tempMobileNumber,
         email,
         nid,
         pin,

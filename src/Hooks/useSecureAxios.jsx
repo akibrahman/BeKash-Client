@@ -15,7 +15,6 @@ const useSecureAxios = () => {
       },
       (error) => {
         // console.log("Tracked in the Axios Interceptor - ", error.response);
-        console.log("+++>>>>", error);
         return error;
       }
     );

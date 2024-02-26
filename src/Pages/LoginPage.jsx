@@ -1,7 +1,13 @@
+import { useContext } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useSecureAxios from "../Hooks/useSecureAxios";
+import { AuthContext } from "../Providers/AuthProvider";
 
 const LoginPage = () => {
+  const { authReloader, setAuthReloader } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const axiosInstance = useSecureAxios();
   const handleLogin = async (e) => {
     e.preventDefault();
     const data = e.target;
@@ -27,8 +33,15 @@ const LoginPage = () => {
       toast.error("Invalid PIN!");
       return;
     }
-    toast.success("OK");
-    console.log(user, pin);
+    const res = await axiosInstance.post("/user/login", { user, pin });
+    if (res.data.success) {
+      console.log(res);
+      setAuthReloader(!authReloader);
+      toast.success("Login Successfull");
+      navigate("/");
+    } else {
+      toast.error("Try again!");
+    }
   };
   return (
     <div className="w-screen h-[calc(100vh-68px)] flex items-center justify-center">

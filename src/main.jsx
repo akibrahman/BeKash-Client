@@ -7,6 +7,7 @@ import "./index.css";
 import HomePage from "./Pages/HomePage.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
 import RegistrationPage from "./Pages/RegistrationPage.jsx";
+import AuthProvider from "./Providers/AuthProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Toaster position="top-center" reverseOrder={false} />
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <Toaster position="top-center" reverseOrder={false} />
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
