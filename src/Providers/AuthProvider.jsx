@@ -10,6 +10,13 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [authReloader, setAuthReloader] = useState(true);
 
+  //! LogOut
+  const logOut = async () => {
+    await axiosInstance.post("/user/logout", { email: user.email });
+    toast.success("Logout Successful");
+    setAuthReloader(!authReloader);
+  };
+
   //! User
   const getUser = async () => {
     try {
@@ -34,34 +41,11 @@ const AuthProvider = ({ children }) => {
     getUser();
   }, [authReloader]);
 
-  //! LogOut
-  const logOut = async () => {
-    await axiosInstance.post("/user/logout", { email: user.email });
-    toast.success("Logout Successful");
-    setAuthReloader(!authReloader);
-  };
-
-  //! LogIn
-  const logIn = async (email, password) => {
-    // const { data } = await axiosInstance.post("/user/login", {
-    //   email,
-    //   password,
-    // });
-    // if (data.status) {
-    //   setAuthReloader(!authReloader);
-    //   return { success: true };
-    // } else {
-    //   toast.error(data.msg);
-    //   setAuthReloader(!authReloader);
-    //   return { success: false };
-    // }
-  };
   const authInfo = {
     user,
     logOut,
     authReloader,
     setAuthReloader,
-    logIn,
     loading,
   };
   return (

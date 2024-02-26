@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import useSecureAxios from "../Hooks/useSecureAxios";
+import { AuthContext } from "../Providers/AuthProvider";
 import { imageToBase64 } from "../Utils/imageToBase64";
 import { imageUpload } from "../Utils/imageUpload";
 
 const RegistrationPage = () => {
   const [preview, setPreview] = useState(null);
+  const { authReloader, setAuthReloader } = useContext(AuthContext);
   const [role, setRole] = useState("user");
   const axiosInstance = useSecureAxios();
   const navigate = useNavigate();
@@ -79,21 +81,29 @@ const RegistrationPage = () => {
     } else {
       tempMobileNumber = mobileNumber;
     }
+    const url = await imageUpload(data.profilePicture.files[0]);
+    const user = {
+      name,
+      mobileNumber: tempMobileNumber,
+      email,
+      nid,
+      pin,
+      profilePicture: url,
+      role,
+    };
     try {
-      const url = await imageUpload(data.profilePicture.files[0]);
-      const user = {
-        name,
-        mobileNumber: tempMobileNumber,
-        email,
-        nid,
-        pin,
-        profilePicture: url,
-        role,
-      };
       const res = await axiosInstance.post("/user/register", user);
       console.log(res);
-      toast.success("Registration successfull");
-      navigate("/");
+      if (res?.response?.data?.error.code == 11000) {
+        let [errorOne] = Object.keys(res.response.data.error.keyPattern);
+        // if(errorOne=='email'){
+        toast.error(`Account already exists with this ${errorOne}`);
+        // }
+      } else {
+        setAuthReloader(!authReloader);
+        toast.success("Registration successfull");
+        navigate("/profile");
+      }
     } catch (error) {
       console.log(error);
       if (error.response.data.error.code == 11000) {

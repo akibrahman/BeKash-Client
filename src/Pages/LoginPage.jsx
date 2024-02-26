@@ -42,7 +42,7 @@ const LoginPage = () => {
         console.log(res);
         setAuthReloader(!authReloader);
         toast.success("Login Successfull");
-        navigate("/");
+        navigate("/profile");
       } else {
         toast.error(res.data.msg);
       }
