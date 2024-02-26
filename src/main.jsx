@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import "./index.css";
 import HomePage from "./Pages/HomePage.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
+import ProfilePage from "./Pages/ProfilePage.jsx";
 import RegistrationPage from "./Pages/RegistrationPage.jsx";
 import AuthProvider from "./Providers/AuthProvider.jsx";
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
       {
         path: "/login",

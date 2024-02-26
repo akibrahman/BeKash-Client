@@ -12,7 +12,10 @@ const NavBar = () => {
           <p>Home</p>
 
           {user ? (
-            <p>My Bekash</p>
+            <Link to="/profile">
+              {" "}
+              <p>My Bekash</p>
+            </Link>
           ) : (
             <Link to="/login">
               <p className="bg-white text-primary px-4 py-1 rounded-full font-bold cursor-pointer select-none duration-300 active:scale-90">

@@ -34,13 +34,18 @@ const LoginPage = () => {
       return;
     }
     const res = await axiosInstance.post("/user/login", { user, pin });
-    if (res.data.success) {
-      console.log(res);
-      setAuthReloader(!authReloader);
-      toast.success("Login Successfull");
-      navigate("/");
+    console.log(res);
+    if (res?.code == "ERR_BAD_RESPONSE") {
+      toast.error(res.response.data.msg);
     } else {
-      toast.error("Try again!");
+      if (res.data.success) {
+        console.log(res);
+        setAuthReloader(!authReloader);
+        toast.success("Login Successfull");
+        navigate("/");
+      } else {
+        toast.error(res.data.msg);
+      }
     }
   };
   return (

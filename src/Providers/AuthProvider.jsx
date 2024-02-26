@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import useSecureAxios from "../Hooks/useSecureAxios";
 
 export const AuthContext = createContext(null);
@@ -35,9 +36,9 @@ const AuthProvider = ({ children }) => {
 
   //! LogOut
   const logOut = async () => {
-    // await axiosInstance.get("/user/logout");
-    // toast.success("Logout Successful");
-    // setAuthReloader(!authReloader);
+    await axiosInstance.post("/user/logout", { email: user.email });
+    toast.success("Logout Successful");
+    setAuthReloader(!authReloader);
   };
 
   //! LogIn
