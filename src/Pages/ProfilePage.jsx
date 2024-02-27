@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { FaArrowRight } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import useSecureAxios from "../Hooks/useSecureAxios";
 import { AuthContext } from "../Providers/AuthProvider";
@@ -345,7 +346,14 @@ const ProfilePage = () => {
             </div>
             {agents?.map((agent) => (
               <div key={agent._id} className="flex flex-col gap-3 mb-3">
-                <div className="flex flex-col items-center border border-primary py-3 rounded-xl">
+                <div className="flex relative flex-col items-center border border-primary py-3 rounded-xl">
+                  <Link
+                    to={`/transactions-user-wise?number=${agent.mobileNumber}`}
+                  >
+                    <p className="absolute bottom-2 right-4 bg-secondary text-white p-2 rounded-full duration-300 active:scale-90">
+                      <FaArrowRight />
+                    </p>
+                  </Link>
                   <p className="font-semibold text-primary">{agent.name}</p>
                   <p className="font-semibold text-primary">{agent.email}</p>
                   <p className="font-semibold text-primary">
@@ -471,7 +479,14 @@ const ProfilePage = () => {
             </div>
             {users?.map((user) => (
               <div key={user._id} className="flex flex-col gap-3 mb-3">
-                <div className="flex flex-col items-center border border-primary py-3 rounded-xl">
+                <div className="flex flex-col items-center border border-primary py-3 rounded-xl relative">
+                  <Link
+                    to={`/transactions-user-wise?number=${user.mobileNumber}`}
+                  >
+                    <p className="absolute bottom-2 right-4 bg-secondary text-white p-2 rounded-full duration-300 active:scale-90">
+                      <FaArrowRight />
+                    </p>
+                  </Link>
                   <p className="font-semibold text-primary">{user.name}</p>
                   <p className="font-semibold text-primary">{user.email}</p>
                   <p className="font-semibold text-primary">
@@ -585,7 +600,7 @@ const ProfilePage = () => {
           <div className="flex items-start justify-center mt-10">
             <Link to="/transactions-admin">
               <button className="font-semibold bg-secondary px-4 py-2 rounded-full duration-300 text-white active:scale-90">
-                Transactions
+                System Transactions
               </button>
             </Link>
           </div>

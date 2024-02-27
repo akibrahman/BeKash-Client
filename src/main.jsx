@@ -13,6 +13,7 @@ import ProfilePage from "./Pages/ProfilePage.jsx";
 import RegistrationPage from "./Pages/RegistrationPage.jsx";
 import SendMoneyPage from "./Pages/SendMoneyPage.jsx";
 import TransactionsPage from "./Pages/TransactionsPage.jsx";
+import UserWiseTransactionsPage from "./Pages/UserWiseTransactionsPage.jsx";
 import AuthProvider from "./Providers/AuthProvider.jsx";
 import "./index.css";
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/transactions",
         element: <TransactionsPage />,
+      },
+      {
+        path: "/transactions-user-wise",
+        element: <UserWiseTransactionsPage />,
       },
       {
         path: "/send-money",
