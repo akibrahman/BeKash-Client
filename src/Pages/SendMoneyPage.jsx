@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import useSecureAxios from "../Hooks/useSecureAxios";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const SendMoneyPage = () => {
   const { user, authReloader, setAuthReloader } = useContext(AuthContext);
+  const navigate = useNavigate();
   const axiosInstance = useSecureAxios();
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -65,6 +67,7 @@ const SendMoneyPage = () => {
         return;
       } else {
         toast.success(res.data.msg);
+        navigate("/profile");
         return;
       }
     } catch (error) {
