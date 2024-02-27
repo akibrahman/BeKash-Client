@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
@@ -9,6 +10,8 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx";
 import RegistrationPage from "./Pages/RegistrationPage.jsx";
 import AuthProvider from "./Providers/AuthProvider.jsx";
+
+const tanstack = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -37,9 +40,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <Toaster position="top-center" reverseOrder={false} />
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={tanstack}>
+      <AuthProvider>
+        <Toaster position="top-center" reverseOrder={false} />
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
