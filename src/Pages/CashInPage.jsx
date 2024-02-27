@@ -1,4 +1,79 @@
+import { useContext } from "react";
+import toast from "react-hot-toast";
+import useSecureAxios from "../Hooks/useSecureAxios";
+import { AuthContext } from "../Providers/AuthProvider";
+
 const CashInPage = () => {
+  const { user, setAuthReloader, authReloader } = useContext(AuthContext);
+  const axiosInstance = useSecureAxios();
+  const handleCashIn = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const mobileNumber = form.mobileNumber.value;
+    const amount = form.amount.value;
+    const pin = form.pin.value;
+    if (!mobileNumber) {
+      toast.error("Please enter your Mobile number!");
+      return;
+    }
+    if (!pin) {
+      toast.error("Please enter PIN!");
+      return;
+    }
+    if (!amount) {
+      toast.error("Please enter Amount!");
+      return;
+    }
+
+    const bdPhoneRegex = /^(\+?88)?01[3-9]\d{8}$/;
+    let tempMobileNumber = mobileNumber;
+
+    if (!bdPhoneRegex.test(mobileNumber)) {
+      toast.error(`'${mobileNumber}' is not a valid Mobile Number`);
+      return;
+    }
+    if (amount < 50) {
+      toast.error(`Amount should be more than or equal 50 BDT!`);
+      return;
+    }
+    if (!/^\d+$/.test(pin)) {
+      toast.error("PIN should be a number!");
+      return;
+    }
+    if (pin.length != 4) {
+      toast.error("PIN must be 4 digit!");
+      return;
+    }
+    const numericOnly = mobileNumber.replace(/\D/g, "");
+    if (numericOnly.startsWith("88")) {
+      tempMobileNumber = "+" + numericOnly;
+    } else if (numericOnly.startsWith("01") && numericOnly.length === 11) {
+      tempMobileNumber = "+88" + numericOnly;
+    } else {
+      tempMobileNumber = mobileNumber;
+    }
+    try {
+      const res = await axiosInstance.post("/cash-in", {
+        email: user.email,
+        mobileNumber: tempMobileNumber,
+        amount: parseInt(amount),
+        pin,
+      });
+      console.log(res?.data);
+      if (!res.data.success) {
+        toast.error(res.data.msg);
+        return;
+      } else {
+        toast.success(res.data.msg);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
+    } finally {
+      setAuthReloader(!authReloader);
+    }
+  };
   return (
     <div className="flex items-center justify-center p-10">
       <div className="w-[500px] h-[450px] border border-secondary rounded-xl">
@@ -6,7 +81,7 @@ const CashInPage = () => {
           Cash In to User
         </p>
         <form
-          //   onSubmit={handleLogin}
+          onSubmit={handleCashIn}
           className="flex flex-col items-center justify-start pt-12 gap-5 h-full"
         >
           <div className="flex flex-col gap-1">
