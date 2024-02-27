@@ -11,6 +11,7 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx";
 import RegistrationPage from "./Pages/RegistrationPage.jsx";
 import SendMoneyPage from "./Pages/SendMoneyPage.jsx";
+import TransactionsPage from "./Pages/TransactionsPage.jsx";
 import AuthProvider from "./Providers/AuthProvider.jsx";
 import "./index.css";
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/transactions",
+        element: <TransactionsPage />,
       },
       {
         path: "/send-money",
