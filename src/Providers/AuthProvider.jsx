@@ -27,7 +27,6 @@ const AuthProvider = ({ children }) => {
       }
       if (res.data.success) {
         setUser(res.data.user);
-        console.log(res.data.user);
       } else {
         setUser(null);
       }

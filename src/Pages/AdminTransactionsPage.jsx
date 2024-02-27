@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
+import { FaArrowRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import useSecureAxios from "../Hooks/useSecureAxios";
 import { AuthContext } from "../Providers/AuthProvider";
 
@@ -71,6 +73,11 @@ const AdminTransactionsPage = () => {
                 {t.methode}-{t.amount} BDT
               </p>
             </div>
+            <Link to={`/transaction/${t._id}`}>
+              <p className="p-5 cursor-pointer">
+                <FaArrowRight className="text-xl text-secondary" />
+              </p>
+            </Link>
           </div>
         ))}
       </div>
