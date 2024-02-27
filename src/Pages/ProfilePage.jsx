@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaArrowRight } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,11 +9,21 @@ import { camelCaseToCapitalized } from "../Utils/camelToCapitalize";
 
 const ProfilePage = () => {
   const { logOut, user } = useContext(AuthContext);
+  const [systemBalance, setSystemBalance] = useState(0);
   const [agentNumber, setAgentNumber] = useState("");
   const [userNumber, setUserNumber] = useState("");
   const navigate = useNavigate();
   const axiosInstance = useSecureAxios();
   const [blur, setBlur] = useState(true);
+  useEffect(() => {
+    axiosInstance.get("/system-balance").then((res) => {
+      if (res.data.success) {
+        setSystemBalance(res.data.systemBalance);
+      } else {
+        setSystemBalance(0);
+      }
+    });
+  }, [axiosInstance]);
   //! Fetching Agents
   const { data: agents, refetch: agentRefetch } = useQuery({
     queryKey: ["agents", "for_admin", agentNumber],
@@ -212,7 +222,7 @@ const ProfilePage = () => {
               } select-none ${blur ? "blur-sm" : "blur-0"}`}
             >
               {" "}
-              {0} /- BDT
+              {systemBalance} /- BDT
             </span>
           </p>
         )}
