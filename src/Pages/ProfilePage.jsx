@@ -48,8 +48,17 @@ const ProfilePage = () => {
     },
     enabled: user && user.role === "admin" ? true : false,
   });
+  //! Fetching Cash Reqs
+  const { data: cashReqs, refetch: cashReqsRefetch } = useQuery({
+    queryKey: ["cashreqs", "for_admin"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/cash-request/get`);
+      return res.data.reqs;
+    },
+    enabled: user && user.role === "admin" ? true : false,
+  });
   if (!user) return;
-  //   if (user.role === "admin" && !users) return;
+  if (user.role === "admin" && !cashReqs) return;
   return (
     <div>
       <div className="relative flex flex-col md:flex-row items-center justify-center gap-3 md:gap-20 py-10">
@@ -316,7 +325,27 @@ const ProfilePage = () => {
                   </p>
                 </div>
               </Link>
-              <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await axiosInstance.post("/cash-request/add", {
+                      id: user._id,
+                      name: user.name,
+                      email: user.email,
+                      number: user.mobileNumber,
+                    });
+                    if (res.data.success) {
+                      toast.success(res.data.msg);
+                    } else {
+                      toast.error(res.data.msg);
+                    }
+                  } catch (error) {
+                    console.log(error);
+                    toast.error("Something went wrong!");
+                  }
+                }}
+                className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90"
+              >
                 Cash Request
               </button>
               {/* <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
@@ -606,6 +635,84 @@ const ProfilePage = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="">
+            <p className="text-center font-semibold bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
+              Cash Requests
+            </p>
+            <div className="flex flex-col gap-3">
+              {cashReqs.map((req) => (
+                <div
+                  className="border p-5 m-2 border-secondary font-semibold rounded-md"
+                  key={req._id}
+                >
+                  <p>ID: {req.agentId}</p>
+                  <p>Name: {req.agentName}</p>
+                  <p>E-mail: {req.agentEmail}</p>
+                  <p>Number: {req.agentNumber}</p>
+                  {req.status === "processing" && (
+                    <div className="flex items-center justify-center gap-4 mt-3">
+                      <button
+                        onClick={async () => {
+                          try {
+                            const res = await axiosInstance.post(
+                              "/cash-request/approve",
+                              { id: req._id }
+                            );
+                            if (res.data.success) {
+                              toast.success(res.data.msg);
+                            } else {
+                              toast.error(res.data.msg);
+                            }
+                          } catch (error) {
+                            console.log(error);
+                            toast.error("Something went wrong, try again!");
+                          } finally {
+                            await cashReqsRefetch();
+                          }
+                        }}
+                        className="text-white bg-green-600 px-4 py-1 rounded-full duration-300 active:scale-90"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={async () => {
+                          try {
+                            const res = await axiosInstance.post(
+                              "/cash-request/decline",
+                              { id: req._id }
+                            );
+                            if (res.data.success) {
+                              toast.success(res.data.msg);
+                            } else {
+                              toast.error(res.data.msg);
+                            }
+                          } catch (error) {
+                            console.log(error);
+                            toast.error("Something went wrong, try again!");
+                          } finally {
+                            await cashReqsRefetch();
+                          }
+                        }}
+                        className="text-white bg-red-600 px-4 py-1 rounded-full duration-300 active:scale-90"
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  )}
+                  {req.status === "approved" && (
+                    <p className="text-center font-semibold text-green-600">
+                      Approved
+                    </p>
+                  )}
+                  {req.status === "declined" && (
+                    <p className="text-center font-semibold text-red-600">
+                      Declined
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
           <div className="flex items-start justify-center mt-10">
             <Link to="/transactions-admin">
