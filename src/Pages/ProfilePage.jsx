@@ -16,7 +16,8 @@ const ProfilePage = () => {
     queryKey: ["agents", "for_admin"],
     queryFn: async () => {
       const res = await axiosInstance.get("/user/getagents");
-      return res.data.agents;
+      const totalBalance = res.data.agents.reduce((a, c) => a + c.balance, 0);
+      return { agents: res.data.agents, totalBalance };
     },
     enabled: user && user.role === "admin" ? true : false,
   });
@@ -25,7 +26,8 @@ const ProfilePage = () => {
     queryKey: ["users", "for_admin"],
     queryFn: async () => {
       const res = await axiosInstance.get("/user/getusers");
-      return res.data.users;
+      const totalBalance = res.data.users.reduce((a, c) => a + c.balance, 0);
+      return { users: res.data.users, totalBalance };
     },
     enabled: user && user.role === "admin" ? true : false,
   });
@@ -79,7 +81,7 @@ const ProfilePage = () => {
               className={`border-2 px-3 py-1 ${
                 user.role === "user" ? "border-primary" : "border-secondary"
               } rounded-full ${
-                user.isBlocked
+                user.isBlocked && !user.isRoleVerified
                   ? "pointer-events-none cursor-not-allowed"
                   : "pointer-events-auto cursor-pointer"
               }`}
@@ -95,7 +97,7 @@ const ProfilePage = () => {
                 className={`font-semibold ${
                   user.role === "user" ? "text-primary" : "text-secondary"
                 } select-none ${blur ? "blur-sm" : "blur-0"} ${
-                  user.isBlocked
+                  user.isBlocked && !user.isRoleVerified
                     ? "pointer-events-none cursor-not-allowed"
                     : "pointer-events-auto cursor-pointer"
                 }`}
@@ -141,6 +143,69 @@ const ProfilePage = () => {
             >
               {" "}
               {user.balance} /- BDT
+            </span>
+          </p>
+        )}
+
+        {user.role === "admin" && (
+          <p
+            onClick={() => {
+              setBlur(false);
+              const intervalId = setInterval(() => {
+                clearInterval(intervalId);
+                setBlur(true);
+              }, 3000);
+            }}
+            className={`flex flex-col items-center border-2 px-6 py-1 ${
+              user.role === "user" ? "border-primary" : "border-secondary"
+            } rounded-full cursor-pointer`}
+          >
+            <span className="font-semibold">Total Income</span>
+            <span
+              onClick={() => {
+                setBlur(false);
+                const intervalId = setInterval(() => {
+                  setBlur(true);
+                  clearInterval(intervalId);
+                }, 3000);
+              }}
+              className={`font-semibold ${
+                user.role === "user" ? "text-primary" : "text-secondary"
+              } select-none ${blur ? "blur-sm" : "blur-0"}`}
+            >
+              {" "}
+              {user.balance} /- BDT
+            </span>
+          </p>
+        )}
+        {user.role === "admin" && (
+          <p
+            onClick={() => {
+              setBlur(false);
+              const intervalId = setInterval(() => {
+                clearInterval(intervalId);
+                setBlur(true);
+              }, 3000);
+            }}
+            className={`flex flex-col items-center border-2 px-6 py-1 ${
+              user.role === "user" ? "border-primary" : "border-secondary"
+            } rounded-full cursor-pointer`}
+          >
+            <span className="font-semibold">System Balance</span>
+            <span
+              onClick={() => {
+                setBlur(false);
+                const intervalId = setInterval(() => {
+                  setBlur(true);
+                  clearInterval(intervalId);
+                }, 3000);
+              }}
+              className={`font-semibold ${
+                user.role === "user" ? "text-primary" : "text-secondary"
+              } select-none ${blur ? "blur-sm" : "blur-0"}`}
+            >
+              {" "}
+              {agents.totalBalance + users.totalBalance} /- BDT
             </span>
           </p>
         )}
@@ -217,7 +282,7 @@ const ProfilePage = () => {
         </div>
       )}
       {/* Agent  */}
-      {user.role === "agent" && user.isRoleVerified && (
+      {user.role === "agent" && user.isRoleVerified && !user.isBlocked && (
         <div className="border-t-2 border-secondary px-8 py-2 grid grid-cols-2">
           <div className="">
             <p className="font-bold text-center text-secondary">Service</p>
@@ -254,13 +319,17 @@ const ProfilePage = () => {
       )}
       {/* Admin  */}
       {user.role === "admin" && (
-        <div className="grid grid-cols-4 p-5 border-t-2 border-primary px-6">
+        <div
+          className={`grid grid-cols-4 p-5 border-t-2 ${
+            user.role === "user" ? "border-primary" : "border-secondary"
+          } px-6`}
+        >
           {/* All Agents  */}
           <div className="h-[600px] overflow-y-scroll pr-2">
             <p className="text-center font-semibold mb-3 bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
               Agents
             </p>
-            {agents.map((agent) => (
+            {agents.agents.map((agent) => (
               <div key={agent._id} className="flex flex-col gap-3 mb-3">
                 <div className="flex flex-col items-center border border-primary py-3 rounded-xl">
                   <p className="font-semibold text-primary">{agent.name}</p>
@@ -374,11 +443,11 @@ const ProfilePage = () => {
             ))}
           </div>
           {/* All Users  */}
-          <div className="h-[600px] overflow-y-scroll pr-2">
+          <div className="h-[600px] overflow-y-scroll px-2">
             <p className="text-center font-semibold mb-3 bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto ">
               Users
             </p>
-            {users.map((user) => (
+            {users.users.map((user) => (
               <div key={user._id} className="flex flex-col gap-3 mb-3">
                 <div className="flex flex-col items-center border border-primary py-3 rounded-xl">
                   <p className="font-semibold text-primary">{user.name}</p>
