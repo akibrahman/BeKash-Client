@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
+import AdminTransactionsPage from "./Pages/AdminTransactionsPage.jsx";
 import CashInPage from "./Pages/CashInPage.jsx";
 import CashOutPage from "./Pages/CashOutPage.jsx";
 import HomePage from "./Pages/HomePage.jsx";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/transactions-admin",
+        element: <AdminTransactionsPage />,
       },
       {
         path: "/transactions",

@@ -8,31 +8,37 @@ import { camelCaseToCapitalized } from "../Utils/camelToCapitalize";
 
 const ProfilePage = () => {
   const { logOut, user } = useContext(AuthContext);
+  const [agentNumber, setAgentNumber] = useState("");
+  const [userNumber, setUserNumber] = useState("");
   const navigate = useNavigate();
   const axiosInstance = useSecureAxios();
   const [blur, setBlur] = useState(true);
   //! Fetching Agents
   const { data: agents, refetch: agentRefetch } = useQuery({
-    queryKey: ["agents", "for_admin"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/user/getagents");
-      const totalBalance = res.data.agents.reduce((a, c) => a + c.balance, 0);
-      return { agents: res.data.agents, totalBalance };
+    queryKey: ["agents", "for_admin", agentNumber],
+    queryFn: async ({ queryKey }) => {
+      const res = await axiosInstance.get(
+        `/user/getagents?number=${queryKey[2]}`
+      );
+      //   const totalBalance = res.data.agents.reduce((a, c) => a + c.balance, 0);
+      return res.data.agents;
     },
     enabled: user && user.role === "admin" ? true : false,
   });
   //! Fetching Users
   const { data: users, refetch: userRefetch } = useQuery({
-    queryKey: ["users", "for_admin"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/user/getusers");
-      const totalBalance = res.data.users.reduce((a, c) => a + c.balance, 0);
-      return { users: res.data.users, totalBalance };
+    queryKey: ["users", "for_admin", userNumber],
+    queryFn: async ({ queryKey }) => {
+      const res = await axiosInstance.get(
+        `/user/getusers?number=${queryKey[2]}`
+      );
+      //   const totalBalance = res.data.users.reduce((a, c) => a + c.balance, 0);
+      return res.data.users;
     },
     enabled: user && user.role === "admin" ? true : false,
   });
   if (!user) return;
-  if (user.role === "admin" && (!agents || !users)) return;
+  //   if (user.role === "admin" && !users) return;
   return (
     <div>
       <div className="relative flex items-center justify-center gap-20 py-10">
@@ -205,7 +211,7 @@ const ProfilePage = () => {
               } select-none ${blur ? "blur-sm" : "blur-0"}`}
             >
               {" "}
-              {agents.totalBalance + users.totalBalance} /- BDT
+              {0} /- BDT
             </span>
           </p>
         )}
@@ -326,10 +332,18 @@ const ProfilePage = () => {
         >
           {/* All Agents  */}
           <div className="h-[600px] overflow-y-scroll pr-2">
-            <p className="text-center font-semibold mb-3 bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
-              Agents
-            </p>
-            {agents.agents.map((agent) => (
+            <div className="flex items-center gap-3 mb-3">
+              <p className="text-center font-semibold bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
+                Agents
+              </p>
+              <input
+                className="bg-transparent border border-secondary px-3 py-1 rounded-full"
+                placeholder="Mobile Number"
+                type="text"
+                onChange={(e) => setAgentNumber(e.target.value)}
+              />
+            </div>
+            {agents?.map((agent) => (
               <div key={agent._id} className="flex flex-col gap-3 mb-3">
                 <div className="flex flex-col items-center border border-primary py-3 rounded-xl">
                   <p className="font-semibold text-primary">{agent.name}</p>
@@ -444,10 +458,18 @@ const ProfilePage = () => {
           </div>
           {/* All Users  */}
           <div className="h-[600px] overflow-y-scroll px-2">
-            <p className="text-center font-semibold mb-3 bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto ">
-              Users
-            </p>
-            {users.users.map((user) => (
+            <div className="flex items-center gap-3 mb-3">
+              <p className="text-center font-semibold bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
+                Users
+              </p>
+              <input
+                className="bg-transparent border border-secondary px-3 py-1 rounded-full"
+                placeholder="Mobile Number"
+                type="text"
+                onChange={(e) => setUserNumber(e.target.value)}
+              />
+            </div>
+            {users?.map((user) => (
               <div key={user._id} className="flex flex-col gap-3 mb-3">
                 <div className="flex flex-col items-center border border-primary py-3 rounded-xl">
                   <p className="font-semibold text-primary">{user.name}</p>
@@ -559,6 +581,13 @@ const ProfilePage = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex items-start justify-center mt-10">
+            <Link to="/transactions-admin">
+              <button className="font-semibold bg-secondary px-4 py-2 rounded-full duration-300 text-white active:scale-90">
+                Transactions
+              </button>
+            </Link>
           </div>
         </div>
       )}
