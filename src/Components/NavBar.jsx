@@ -5,7 +5,15 @@ import { AuthContext } from "../Providers/AuthProvider";
 const NavBar = () => {
   const { user } = useContext(AuthContext);
   return (
-    <nav className=" bg-primary text-white py-4 font-semibold">
+    <nav
+      className={`${
+        user?.role === "agent"
+          ? "bg-secondary"
+          : user?.role === "admin"
+          ? "bg-secondary"
+          : "bg-primary"
+      } text-white py-4 font-semibold`}
+    >
       <div className="flex items-center justify-between w-[80%] mx-auto">
         <p className="font-bold text-3xl">BeKash</p>
         <div className="flex items-center justify-center gap-10">

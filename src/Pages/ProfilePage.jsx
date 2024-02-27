@@ -38,10 +38,18 @@ const ProfilePage = () => {
           <p className="font-semibold text-primary">Wait for admin Approval</p>
         ) : user.role === "agent" && !user.isRoleVerified && user.isBlocked ? (
           <div className="flex flex-col items-center justify-center gap-1">
-            <p className="font-semibold text-primary">
+            <p
+              className={`font-semibold ${
+                user.role === "user" ? "text-primary" : "text-secondary"
+              }`}
+            >
               Admin declined your approval
             </p>
-            <button className="bg-primary text-white font-semibold px-4 py-1 rounded-full duration-300 active:scale-90">
+            <button
+              className={`${
+                user.role === "user" ? "bg-primary" : "bg-secondary"
+              } text-white font-semibold px-4 py-1 rounded-full duration-300 active:scale-90`}
+            >
               Request Again
             </button>
           </div>
@@ -57,7 +65,9 @@ const ProfilePage = () => {
                   setBlur(true);
                 }, 3000);
               }}
-              className="border-2 px-3 py-1 border-primary rounded-full cursor-pointer"
+              className={`border-2 px-3 py-1 ${
+                user.role === "user" ? "border-primary" : "border-secondary"
+              } rounded-full cursor-pointer`}
             >
               <span
                 onClick={() => {
@@ -67,9 +77,9 @@ const ProfilePage = () => {
                     clearInterval(intervalId);
                   }, 3000);
                 }}
-                className={`font-semibold text-primary select-none ${
-                  blur ? "blur-sm" : "blur-0"
-                }`}
+                className={`font-semibold ${
+                  user.role === "user" ? "text-primary" : "text-secondary"
+                } select-none ${blur ? "blur-sm" : "blur-0"}`}
               >
                 {" "}
                 {user.balance} /- BDT
@@ -86,7 +96,9 @@ const ProfilePage = () => {
                 setBlur(true);
               }, 3000);
             }}
-            className="border-2 px-3 py-1 border-primary rounded-full cursor-pointer"
+            className={`border-2 px-3 py-1 ${
+              user.role === "user" ? "border-primary" : "border-secondary"
+            } rounded-full cursor-pointer`}
           >
             <span
               onClick={() => {
@@ -96,9 +108,9 @@ const ProfilePage = () => {
                   clearInterval(intervalId);
                 }, 3000);
               }}
-              className={`font-semibold text-primary select-none ${
-                blur ? "blur-sm" : "blur-0"
-              }`}
+              className={`font-semibold ${
+                user.role === "user" ? "text-primary" : "text-secondary"
+              } select-none ${blur ? "blur-sm" : "blur-0"}`}
             >
               {" "}
               {user.balance} /- BDT
@@ -107,20 +119,34 @@ const ProfilePage = () => {
         )}
         <img
           src={user.profilePicture}
-          className="w-32 h-32 rounded-full border-2 border-primary"
+          className={`w-32 h-32 rounded-full border-2 ${
+            user.role === "user" ? "border-primary" : "border-secondary"
+          }`}
           alt=""
         />
-        <div className="border-l-2 border-primary pl-5 py-2 font-semibold space-y-1">
+        <div
+          className={`border-l-2 ${
+            user.role === "user" ? "border-primary" : "border-secondary"
+          } pl-5 py-2 font-semibold space-y-1`}
+        >
           <p>
             {user.name} - NID:{user.nid}
           </p>
           <p>
             {user.email} - {user.mobileNumber}
           </p>
-          <p className="text-white bg-primary text-center rounded-xl">
+          <p
+            className={`text-white ${
+              user.role === "user" ? "bg-primary" : "bg-secondary"
+            } text-center rounded-xl`}
+          >
             {camelCaseToCapitalized(user.role)}
           </p>
-          <p className="text-white bg-primary text-center rounded-xl">
+          <p
+            className={`text-white ${
+              user.role === "user" ? "bg-primary" : "bg-secondary"
+            } text-center rounded-xl`}
+          >
             {user.isRoleVerified ? "Verified" : "Not Verified"}
           </p>
         </div>
@@ -141,18 +167,51 @@ const ProfilePage = () => {
                   <p className="text-primary font-semibold">Send Money</p>
                 </div>
               </Link>
-              <div className="flex flex-col items-center cursor-pointer select-none duration-300 active:scale-90">
-                <img
-                  className="w-14 h-14 rounded-full border border-primary"
-                  src="/cashout.png"
-                  alt=""
-                />
-                <p className="text-primary font-semibold">Cash Out</p>
-              </div>
+              <Link to="/cash-out">
+                <div className="flex flex-col items-center cursor-pointer select-none duration-300 active:scale-90">
+                  <img
+                    className="w-14 h-14 rounded-full border border-primary"
+                    src="/cashout.png"
+                    alt=""
+                  />
+                  <p className="text-primary font-semibold">Cash Out</p>
+                </div>
+              </Link>
             </div>
           </div>
           <div className="">
             <p className="font-bold text-center text-primary">Settings</p>
+          </div>
+        </div>
+      )}
+      {/* Agent  */}
+      {user.role === "agent" && (
+        <div className="border-t-2 border-secondary px-8 py-2 grid grid-cols-2">
+          <div className="">
+            <p className="font-bold text-center text-secondary">Service</p>
+            <div className="flex items-center justify-center gap-10 py-4">
+              <Link to="/cash-in">
+                <div className="flex flex-col items-center cursor-pointer select-none duration-300 active:scale-90">
+                  <img
+                    className="w-14 h-14 rounded-full border border-secondary"
+                    src="/cashout.png"
+                    alt=""
+                  />
+                  <p className="text-secondary font-semibold">
+                    Cash In to User
+                  </p>
+                </div>
+              </Link>
+              <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
+                Cash Request
+              </button>
+              <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
+                Withdraw Request
+              </button>
+            </div>
+          </div>
+          <div className="">
+            <p className="font-bold text-center text-secondary">Settings</p>
           </div>
         </div>
       )}
