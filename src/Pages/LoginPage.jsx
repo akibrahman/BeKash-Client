@@ -29,8 +29,12 @@ const LoginPage = () => {
       toast.error(`'${user}' is nighter Mobile Number nor E-mail`);
       return;
     }
-    if (pin.split("").length < 4) {
-      toast.error("Invalid PIN!");
+    if (!/^\d+$/.test(pin)) {
+      toast.error("PIN should be a number!");
+      return;
+    }
+    if (pin.length != 4) {
+      toast.error("PIN must be 4 digit!");
       return;
     }
     const res = await axiosInstance.post("/user/login", { user, pin });
@@ -50,7 +54,7 @@ const LoginPage = () => {
   };
   return (
     <div className="w-screen h-[calc(100vh-68px)] flex items-center justify-center">
-      <div className="w-[500px] h-[400px] border border-primary rounded-xl">
+      <div className="w-[400px] md:w-[500px] h-[400px] border border-primary rounded-xl">
         <p className="bg-primary text-white text-center font-semibold py-3 rounded-t-xl text-xl">
           Login
         </p>
@@ -73,7 +77,7 @@ const LoginPage = () => {
               placeholder="PIN"
               name="pin"
               className="bg-transparent w-[300px] border-primary border rounded-full px-8 py-2 font-semibold"
-              type="number"
+              type="password"
             />
           </div>
           <button

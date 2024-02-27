@@ -37,7 +37,7 @@ const AdminTransactionsPage = () => {
         {transactions.map((t) => (
           <div
             key={t._id}
-            className="border p-4 m-2 rounded-md flex items-center justify-between px-10"
+            className="border p-4 m-2 rounded-md flex flex-col md:flex-row gap-3 md:gap-0 items-center justify-between px-10"
           >
             <div className="">
               <p className="ml-3 mb-1">

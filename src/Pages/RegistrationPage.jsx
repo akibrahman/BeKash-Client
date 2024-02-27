@@ -118,7 +118,7 @@ const RegistrationPage = () => {
   };
   return (
     <div className="">
-      <div className="w-[700px] h-[500px] border border-primary rounded-xl mx-auto my-10">
+      <div className="w-[400px] md:w-[700px] md:h-[500px] border border-primary rounded-xl mx-auto my-10">
         <p className="bg-primary text-white text-center font-semibold py-3 rounded-t-xl text-xl">
           Registration
         </p>
@@ -148,7 +148,7 @@ const RegistrationPage = () => {
               Agent
             </p>
           </div>
-          <div className="flex items-center justify-center gap-5">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-5">
             <div className="flex flex-col gap-1">
               <p className="font-semibold ml-4">Name</p>
               <input
@@ -168,7 +168,7 @@ const RegistrationPage = () => {
               />
             </div>
           </div>
-          <div className="flex items-center justify-center gap-5">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-5">
             <div className="flex flex-col gap-1">
               <p className="font-semibold ml-4">E-mail</p>
               <input
@@ -188,7 +188,7 @@ const RegistrationPage = () => {
               />
             </div>
           </div>
-          <div className="flex items-center justify-center gap-5">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-5">
             <div className="flex flex-col gap-1">
               <p className="font-semibold ml-4">NID</p>
               <input
@@ -224,7 +224,7 @@ const RegistrationPage = () => {
               </label>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col md:flex-row flex-col items-center gap-2">
             <button
               type="submit"
               className="bg-primary text-white font-semibold px-6 py-2 rounded-full duration-300 active:scale-90 select-none"

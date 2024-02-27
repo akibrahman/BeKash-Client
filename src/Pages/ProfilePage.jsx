@@ -52,7 +52,7 @@ const ProfilePage = () => {
   //   if (user.role === "admin" && !users) return;
   return (
     <div>
-      <div className="relative flex items-center justify-center gap-20 py-10">
+      <div className="relative flex flex-col md:flex-row items-center justify-center gap-3 md:gap-20 py-10">
         <button
           onClick={async () => {
             await logOut();
@@ -262,7 +262,7 @@ const ProfilePage = () => {
       </div>
       {/* User  */}
       {user.role === "user" && (
-        <div className="border-t-2 border-primary px-8 py-2 grid grid-cols-2">
+        <div className="border-t-2 border-primary px-8 py-2 grid grid-cols-1 gap-10 md:gap-0 md:grid-cols-2 pb-10">
           <div className="">
             <p className="font-bold text-center text-primary">Service</p>
             <div className="flex items-center justify-center gap-10 py-4">
@@ -288,7 +288,7 @@ const ProfilePage = () => {
               </Link>
             </div>
           </div>
-          <div className="px-20">
+          <div className="md:px-20">
             <p className="font-bold text-center text-primary">Settings</p>
             <Link to={user.isBlocked ? "" : "/transactions"}>
               <button className="font-semibold bg-primary text-white px-4 py-1 rounded-full duration-300 active:scale-90">
@@ -300,7 +300,7 @@ const ProfilePage = () => {
       )}
       {/* Agent  */}
       {user.role === "agent" && user.isRoleVerified && !user.isBlocked && (
-        <div className="border-t-2 border-secondary px-8 py-2 grid grid-cols-2">
+        <div className="border-t-2 mb-32 md:mb-3 border-secondary px-8 py-2 grid grid-cols-1 md:grid-cols-2">
           <div className="">
             <p className="font-bold text-center text-secondary">Service</p>
             <div className="flex items-center justify-center gap-10 py-4">
@@ -319,12 +319,12 @@ const ProfilePage = () => {
               <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
                 Cash Request
               </button>
-              <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
+              {/* <button className="font-semibold text-white bg-secondary px-4 py-1 rounded-full duration-300 active:scale-90">
                 Withdraw Request
-              </button>
+              </button> */}
             </div>
           </div>
-          <div className="px-20">
+          <div className="md:px-20">
             <p className="font-bold text-center text-secondary">Settings</p>
             <Link to={user.isBlocked ? "" : "/transactions"}>
               <button className="font-semibold bg-secondary text-white px-4 py-1 rounded-full duration-300 active:scale-90">
@@ -337,12 +337,12 @@ const ProfilePage = () => {
       {/* Admin  */}
       {user.role === "admin" && (
         <div
-          className={`grid grid-cols-4 p-5 border-t-2 ${
+          className={`grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0 p-5 border-t-2 ${
             user.role === "user" ? "border-primary" : "border-secondary"
           } px-6`}
         >
           {/* All Agents  */}
-          <div className="h-[600px] overflow-y-scroll pr-2">
+          <div className="md:h-[600px] md:overflow-y-scroll pr-2">
             <div className="flex items-center gap-3 mb-3">
               <p className="text-center font-semibold bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
                 Agents
@@ -475,7 +475,7 @@ const ProfilePage = () => {
             ))}
           </div>
           {/* All Users  */}
-          <div className="h-[600px] overflow-y-scroll px-2">
+          <div className="md:h-[600px] md:overflow-y-scroll px-2">
             <div className="flex items-center gap-3 mb-3">
               <p className="text-center font-semibold bg-secondary py-1 text-white rounded-full w-max px-6 mx-auto">
                 Users

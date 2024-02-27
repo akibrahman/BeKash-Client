@@ -27,7 +27,7 @@ const TransactionPage = () => {
   return (
     <div>
       <div
-        className={`w-[70%] mx-auto my-5 border rounded-md relative ${
+        className={`w-[95%] md:w-[70%] mx-auto my-5 border rounded-md relative ${
           user.role === "user" ? "border-primary" : "border-secondary"
         }`}
       >
@@ -41,7 +41,7 @@ const TransactionPage = () => {
         >
           Transaction Details
         </p>
-        <div className="p-20 flex flex-col items-center justify-center">
+        <div className="p-5 md:p-20 mt-8 md:mt-0 flex flex-col items-center justify-center">
           <div className="flex flex-col gap-3">
             <p>
               <span className="bg-secondary w-[150px] inline-block text-white font-semibold text-center rounded-full py-1">

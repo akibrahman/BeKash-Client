@@ -14,7 +14,7 @@ const NavBar = () => {
           : "bg-primary"
       } text-white py-4 font-semibold`}
     >
-      <div className="flex items-center justify-between w-[80%] mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between w-[80%] mx-auto">
         <p className="font-bold text-3xl">BeKash</p>
         <div className="flex items-center justify-center gap-10">
           <Link to="/">
