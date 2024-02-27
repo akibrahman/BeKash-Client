@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
 
   //! LogOut
   const logOut = async () => {
+    setLoading(true);
     await axiosInstance.post("/user/logout", { email: user.email });
     toast.success("Logout Successful");
     setAuthReloader(!authReloader);
@@ -19,6 +20,7 @@ const AuthProvider = ({ children }) => {
 
   //! User
   const getUser = async () => {
+    setLoading(true);
     try {
       const res = await axiosInstance.get("/user/find");
       if (res.code == "ERR_BAD_REQUEST") {
@@ -30,10 +32,11 @@ const AuthProvider = ({ children }) => {
       } else {
         setUser(null);
       }
-      setLoading(false);
     } catch (error) {
       console.log(error);
       setUser(null);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {

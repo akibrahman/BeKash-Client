@@ -16,6 +16,9 @@ import TransactionPage from "./Pages/TransactionPage.jsx";
 import TransactionsPage from "./Pages/TransactionsPage.jsx";
 import UserWiseTransactionsPage from "./Pages/UserWiseTransactionsPage.jsx";
 import AuthProvider from "./Providers/AuthProvider.jsx";
+import AdminRoute from "./Routes/AdminRoute.jsx";
+import AgentRoute from "./Routes/AgentRoute.jsx";
+import UserRoute from "./Routes/UserRoute.jsx";
 import "./index.css";
 
 const tanstack = new QueryClient();
@@ -31,35 +34,67 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: (
+          <UserRoute>
+            <ProfilePage />
+          </UserRoute>
+        ),
       },
       {
         path: "/transactions-admin",
-        element: <AdminTransactionsPage />,
+        element: (
+          <AdminRoute>
+            <AdminTransactionsPage />
+          </AdminRoute>
+        ),
       },
       {
         path: "/transactions",
-        element: <TransactionsPage />,
+        element: (
+          <UserRoute>
+            <TransactionsPage />
+          </UserRoute>
+        ),
       },
       {
         path: "/transaction/:id",
-        element: <TransactionPage />,
+        element: (
+          <AdminRoute>
+            <TransactionPage />
+          </AdminRoute>
+        ),
       },
       {
         path: "/transactions-user-wise",
-        element: <UserWiseTransactionsPage />,
+        element: (
+          <AdminRoute>
+            <UserWiseTransactionsPage />
+          </AdminRoute>
+        ),
       },
       {
         path: "/send-money",
-        element: <SendMoneyPage />,
+        element: (
+          <UserRoute>
+            <SendMoneyPage />
+          </UserRoute>
+        ),
       },
       {
         path: "/cash-out",
-        element: <CashOutPage />,
+        element: (
+          <UserRoute>
+            <CashOutPage />
+          </UserRoute>
+        ),
       },
       {
         path: "/cash-in",
-        element: <CashInPage />,
+        element: (
+          <AgentRoute>
+            <CashInPage />
+          </AgentRoute>
+        ),
       },
       {
         path: "/login",
