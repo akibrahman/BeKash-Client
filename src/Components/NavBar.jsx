@@ -9,7 +9,10 @@ const NavBar = () => {
       <div className="flex items-center justify-between w-[80%] mx-auto">
         <p className="font-bold text-3xl">BeKash</p>
         <div className="flex items-center justify-center gap-10">
-          <p>Home</p>
+          <Link to="/">
+            {" "}
+            <p>Home</p>
+          </Link>
 
           {user ? (
             <Link to="/profile">

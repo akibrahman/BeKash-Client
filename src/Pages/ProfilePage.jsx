@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSecureAxios from "../Hooks/useSecureAxios";
 import { AuthContext } from "../Providers/AuthProvider";
 import { camelCaseToCapitalized } from "../Utils/camelToCapitalize";
@@ -130,6 +130,26 @@ const ProfilePage = () => {
         <div className="border-t-2 border-primary px-8 py-2 grid grid-cols-2">
           <div className="">
             <p className="font-bold text-center text-primary">Service</p>
+            <div className="flex items-center justify-center gap-10 py-4">
+              <Link to="/send-money">
+                <div className="flex flex-col items-center cursor-pointer select-none duration-300 active:scale-90">
+                  <img
+                    className="w-14 h-14 rounded-full border border-primary"
+                    src="/sendmoney.png"
+                    alt=""
+                  />
+                  <p className="text-primary font-semibold">Send Money</p>
+                </div>
+              </Link>
+              <div className="flex flex-col items-center cursor-pointer select-none duration-300 active:scale-90">
+                <img
+                  className="w-14 h-14 rounded-full border border-primary"
+                  src="/cashout.png"
+                  alt=""
+                />
+                <p className="text-primary font-semibold">Cash Out</p>
+              </div>
+            </div>
           </div>
           <div className="">
             <p className="font-bold text-center text-primary">Settings</p>
