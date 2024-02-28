@@ -1,8 +1,29 @@
-# React + Vite
+# BeKash project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a 50% clone project of Bkash which is BeKash
 
-Currently, two official plugins are available:
+## Admin:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Mobile Number: 01709605097
+- E-mail: akibrahman5200@gmail.com
+- PIN: 1111
+
+## Agent:
+
+- Mobile Number: 01521787402
+- E-mail: akibrahman728@gmail.com
+- PIN: 1111
+
+## User 1:
+
+- Mobile Number: 01737983016
+- E-mail: akibrahmann@gmail.com
+- PIN: 1111
+
+## User 2:
+
+- Mobile Number: 01737983015
+- E-mail: akibrahmannn@gmail.com
+- PIN: 1111
+
+# [Live Site](https://bekash.vercel.app)
